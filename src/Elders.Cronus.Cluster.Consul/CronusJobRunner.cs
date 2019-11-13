@@ -163,16 +163,15 @@ namespace Elders.Cronus.Cluster.Consul
             return IAmKing;
         }
 
-        private Task KingIsDead()
+        private async Task KingIsDead()
         {
             if (string.IsNullOrEmpty(_sessionId) == false)
             {
                 string resource = $"v1/kv/{_jobName}?release={_sessionId}";
-
-                return _client.PutAsync(resource, null);
+                var data = await GetJobDataAsync<object>().ConfigureAwait(false);
+                StringContent content = GetJsonRequestBody(data);
+                await _client.PutAsync(resource, content).ConfigureAwait(false);
             }
-
-            return Task.CompletedTask;
         }
 
         private async Task<T> ParseResponse<T>(HttpResponseMessage response) where T : new()
