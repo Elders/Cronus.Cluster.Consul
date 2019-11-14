@@ -7,7 +7,7 @@ update_configs:
   - Elders/cronus-team
   default_assignees:
   - Elders/cronus-team
-  target_branch: "release-*"
+  target_branch: "release-6.0.0"
   default_labels:
   - dependencies
   allowed_updates:
