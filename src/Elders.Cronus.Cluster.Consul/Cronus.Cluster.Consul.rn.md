@@ -1,3 +1,6 @@
+#### 6.0.0-beta0004 - 17.11.2019
+* Adds default configuration for consul
+
 #### 6.0.0-beta0003 - 15.11.2019
 * Configures consul with options pattern
 
