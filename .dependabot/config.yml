@@ -4,7 +4,7 @@ update_configs:
   directory: /
   update_schedule: live
   default_reviewers:
-  - "Elders/cronus-team"
+  - Elders/cronus-team
   default_assignees:
   - mynkow
   target_branch: release-6.0.0
@@ -16,9 +16,9 @@ update_configs:
       dependency_type: direct
   automerged_updates:
   - match:
+      dependency_name: Cronus*
       dependency_type: all
       update_type: all
   - match:
-      dependency_name: Cronus*
-      dependency_type: development
+      dependency_type: production
       update_type: all
