@@ -2,7 +2,7 @@
 {
     public class ConsulClusterOptions
     {
-        public string Address { get; set; }
-        public int Port { get; set; }
+        public string Address { get; set; } = "consul.local.com";
+        public int Port { get; set; } = 8500;
     }
 }

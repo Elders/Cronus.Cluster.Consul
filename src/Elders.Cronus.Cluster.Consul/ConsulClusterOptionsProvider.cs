@@ -1,17 +1,16 @@
-﻿using Elders.Cronus.Hosting;
-using Microsoft.Extensions.Configuration;
-using System;
+﻿using Microsoft.Extensions.Configuration;
 
 namespace Elders.Cronus.Persistence.Cassandra
 {
     public class ConsulClusterOptionsProvider : CronusOptionsProviderBase<ConsulClusterOptions>
     {
+        public const string SettingKey = "cronus:cluster:consul";
+
         public ConsulClusterOptionsProvider(IConfiguration configuration) : base(configuration) { }
 
         public override void Configure(ConsulClusterOptions options)
         {
-            options.Address = configuration.GetOptional("cronus:cluster:consul:address", "consul.local.com");
-            options.Port = Int32.Parse(configuration.GetOptional("cronus:cluster:consul:port", "8500"));
+            configuration.GetSection(SettingKey).Bind(options);
         }
     }
 }
