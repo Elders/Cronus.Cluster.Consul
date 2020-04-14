@@ -1,3 +1,6 @@
+#### 6.0.0-beta0007 - 15.04.2020
+* Removed LibLog
+
 #### 6.0.0-beta0006 - 08.04.2020
 * Reworks the ConsulOptions to use options pattern
 
