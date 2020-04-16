@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Library</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <!--Nuget-->
+  <PropertyGroup>
+    <PackageId>Cronus.Cluster.Consul</PackageId>
+    <Product>Cronus</Product>
+    <Title>Cronus</Title>
+    <Authors>Elders OSS</Authors>
+    <Copyright>Copyright © Elders OSS 2013-2020</Copyright>
+    <Description>Cronus is a lightweight framework for building event driven systems with DDD/CQRS in mind</Description>
+    <PackageTags>CQRS DDD ES Event store sourcing</PackageTags>
+    <PackageLicenseUrl>https://github.com/Elders/Cronus/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/Elders/Cronus</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Elders/Cronus.Cluster.Consul.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageIconUrl>https://raw.githubusercontent.com/Elders/logo/master/cronus/frame.png</PackageIconUrl>
+    <AssemblyName>Elders.Cronus.Cluster.Consul</AssemblyName>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <RootNamespace>Elders.Cronus.Cluster.Consul</RootNamespace>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <AssemblyVersion>6.0.0</AssemblyVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Cronus" Version="6.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.3" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="3.1.3" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <DebugType>portable</DebugType>
+    <DebugSymbols>true</DebugSymbols>
+    <EmbedSources>true</EmbedSources>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SourceLink.Create.CommandLine" Version="2.8.3" PrivateAssets="All" />
+  </ItemGroup>
+</Project>
