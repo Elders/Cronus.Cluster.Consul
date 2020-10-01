@@ -1,5 +1,6 @@
 ﻿using Elders.Cronus.Cluster.Consul.Internal;
 using Elders.Cronus.Cluster.Job;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,11 @@ namespace Elders.Cronus.Cluster.Consul
 {
     public class CronusJobRunner : IClusterOperations, IDisposable, ICronusJobRunner
     {
+        private static JsonSerializerSettings settings = new JsonSerializerSettings()
+        {
+            ConstructorHandling = ConstructorHandling.AllowNonPublicDefaultConstructor,
+        };
+
         private readonly HttpClient _client;
 
         string _jobName = string.Empty;
@@ -97,7 +103,7 @@ namespace Elders.Cronus.Cluster.Consul
         {
             CronusJobState jobState = CronusJobState.UpForGrab;
 
-            string resource = $"v1/kv/{_jobName}";
+            string resource = $"v1/kv/cronus/{_jobName}";
             HttpResponseMessage response = await _client.GetAsync(resource, cancellationToken).ConfigureAwait(false);
 
             if (response.IsSuccessStatusCode)
@@ -118,7 +124,7 @@ namespace Elders.Cronus.Cluster.Consul
 
         private async Task<TData> GetJobDataAsync<TData>(CancellationToken cancellationToken = default) where TData : class, new()
         {
-            string resource = $"v1/kv/{_jobName}";
+            string resource = $"v1/kv/cronus/{_jobName}";
             HttpResponseMessage response = await _client.GetAsync(resource, cancellationToken).ConfigureAwait(false);
 
             if (response.IsSuccessStatusCode)
@@ -128,7 +134,8 @@ namespace Elders.Cronus.Cluster.Consul
 
                 if (resource != null && result.Value != null)
                 {
-                    var dataFromCluster = JsonSerializer.Deserialize<TData>(Encoding.UTF8.GetString(Convert.FromBase64String(result.Value)));
+                    string json = Encoding.UTF8.GetString(Convert.FromBase64String(result.Value));
+                    var dataFromCluster = JsonConvert.DeserializeObject<TData>(json, settings);
                     if (dataFromCluster != null)
                         return dataFromCluster;
                 }
@@ -139,7 +146,7 @@ namespace Elders.Cronus.Cluster.Consul
 
         private Task TrackProgressAsync(object data, CancellationToken cancellationToken = default)
         {
-            string resource = $"v1/kv/{_jobName}?acquire={_sessionId}";
+            string resource = $"v1/kv/cronus/{_jobName}?acquire={_sessionId}";
             StringContent content = GetJsonRequestBody(data);
 
             return _client.PutAsync(resource, content, cancellationToken);
@@ -149,7 +156,7 @@ namespace Elders.Cronus.Cluster.Consul
         {
             string sessionId = await RequestSessionAsync(cancellationToken).ConfigureAwait(false);
 
-            string resource = $"v1/kv/{_jobName}?acquire={sessionId}";
+            string resource = $"v1/kv/cronus/{_jobName}?acquire={sessionId}";
             StringContent content = GetJsonRequestBody(data);
 
             HttpResponseMessage response = await _client.PutAsync(resource, content, cancellationToken).ConfigureAwait(false);
@@ -167,7 +174,7 @@ namespace Elders.Cronus.Cluster.Consul
         {
             if (string.IsNullOrEmpty(_sessionId) == false)
             {
-                string resource = $"v1/kv/{_jobName}?release={_sessionId}";
+                string resource = $"v1/kv/cronus/{_jobName}?release={_sessionId}";
                 var data = await GetJobDataAsync<object>().ConfigureAwait(false);
                 StringContent content = GetJsonRequestBody(data);
                 await _client.PutAsync(resource, content).ConfigureAwait(false);
@@ -179,7 +186,7 @@ namespace Elders.Cronus.Cluster.Consul
             if (response.IsSuccessStatusCode)
             {
                 string stringContent = await response.Content.ReadAsStringAsync().ConfigureAwait(false);
-                T result = JsonSerializer.Deserialize<T>(stringContent);
+                T result = JsonConvert.DeserializeObject<T>(stringContent, settings);
 
                 return result;
             }
@@ -189,7 +196,7 @@ namespace Elders.Cronus.Cluster.Consul
 
         private StringContent GetJsonRequestBody(object bodyContent)
         {
-            var jsonBody = JsonSerializer.Serialize(bodyContent, bodyContent.GetType());
+            var jsonBody = JsonConvert.SerializeObject(bodyContent, bodyContent.GetType(), Formatting.None, settings);
 
             var stringContent = new StringContent(jsonBody, Encoding.UTF8, "application/json");
 
