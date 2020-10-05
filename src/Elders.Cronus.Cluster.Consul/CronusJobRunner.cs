@@ -21,6 +21,8 @@ namespace Elders.Cronus.Cluster.Consul
 
         private readonly HttpClient _client;
 
+        CancellationTokenSource tokenSource;
+
         string _jobName = string.Empty;
         string _sessionId = string.Empty;
 
@@ -31,22 +33,28 @@ namespace Elders.Cronus.Cluster.Consul
 
         public async Task<JobExecutionStatus> ExecuteAsync(ICronusJob<object> job, CancellationToken cancellationToken = default)
         {
+            tokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+            CancellationToken ct = tokenSource.Token;
+
             _jobName = job.Name;
 
             try
             {
-                CronusJobState jobState = await GetJobStateAsync(cancellationToken).ConfigureAwait(false);
+                CronusJobState jobState = await GetJobStateAsync(ct).ConfigureAwait(false);
 
                 if (jobState == CronusJobState.UpForGrab)
                 {
-                    await job.SyncInitialStateAsync(this, cancellationToken).ConfigureAwait(false);
+                    await job.SyncInitialStateAsync(this, ct).ConfigureAwait(false);
 
-                    bool iAmKing = await BecomeKingAsync(job.Data, cancellationToken).ConfigureAwait(false);
+                    bool iAmKing = await BecomeKingAsync(job.Data, ct).ConfigureAwait(false);
                     if (iAmKing)
                     {
-                        jobState = await GetJobStateAsync(cancellationToken).ConfigureAwait(false);
-                        if (jobState == CronusJobState.UpForGrab)
-                            return await job.RunAsync(this, cancellationToken).ConfigureAwait(false);
+                        using (Timer pinger = new Timer(PingTimerMethod, tokenSource, TimeSpan.Zero, TimeSpan.FromSeconds(10)))
+                        {
+                            jobState = await GetJobStateAsync(ct).ConfigureAwait(false);
+                            if (jobState == CronusJobState.UpForGrab)
+                                return await job.RunAsync(this, ct).ConfigureAwait(false);
+                        }
                     }
                 }
 
@@ -56,6 +64,23 @@ namespace Elders.Cronus.Cluster.Consul
             catch (Exception) { return JobExecutionStatus.Failed; }
 
             return JobExecutionStatus.Completed;
+        }
+
+        private void PingTimerMethod(object state)
+        {
+            CancellationTokenSource ts = state as CancellationTokenSource;
+
+            try
+            {
+                if (ts.Token.IsCancellationRequested) return;
+
+                if (RenewSessionAsync(ts.Token).GetAwaiter().GetResult() == false)
+                    ts.Cancel();
+            }
+            catch (Exception)
+            {
+                ts.Cancel();
+            }
         }
 
         public Task<TData> PingAsync<TData>(TData data, CancellationToken cancellationToken = default) where TData : class, new()
@@ -90,11 +115,13 @@ namespace Elders.Cronus.Cluster.Consul
             return session.ID;
         }
 
-        private Task RenewSessionAsync(CancellationToken cancellationToken = default)
+        private async Task<bool> RenewSessionAsync(CancellationToken cancellationToken = default)
         {
             string resource = $"v1/session/renew/{_sessionId}";
 
-            return _client.PutAsync(resource, null, cancellationToken);
+            var response = await _client.PutAsync(resource, null, cancellationToken);
+
+            return response.IsSuccessStatusCode;
         }
 
         private bool IAmKing => string.IsNullOrEmpty(_sessionId) == false;
