@@ -1,3 +1,6 @@
+#### 6.2.1 - 05.10.2020
+* Properly keeps consul session while executing a job
+
 #### 6.2.0 - 01.10.2020
 * Groups cluster operations under Cronus folder
 
