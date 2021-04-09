@@ -56,6 +56,11 @@ namespace Elders.Cronus.Cluster.Consul
                                 return await job.RunAsync(this, ct).ConfigureAwait(false);
                         }
                     }
+                    else // How to reproduce this case: 1. schedule a job twice for after 30 seconds (double click rebuild for example) and then kill and start the application
+                    {
+                        // A thread got here a millisecond before you, snatched your job and started running it , so you are not the king.
+                        return JobExecutionStatus.Running;
+                    }
                 }
 
                 if (jobState == CronusJobState.Running)
@@ -135,10 +140,10 @@ namespace Elders.Cronus.Cluster.Consul
 
             if (response.IsSuccessStatusCode)
             {
-                var asd = await ParseResponse<List<KVResponse>>(response).ConfigureAwait(false);
-                var result = asd.FirstOrDefault();
+                List<KVResponse> resultAsList = await ParseResponse<List<KVResponse>>(response).ConfigureAwait(false);
+                KVResponse result = resultAsList.FirstOrDefault();
 
-                jobState = string.IsNullOrEmpty(result.Session)
+                jobState = string.IsNullOrEmpty(result?.Session)
                     ? CronusJobState.UpForGrab
                     : CronusJobState.Running;
 
