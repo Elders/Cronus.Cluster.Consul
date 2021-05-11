@@ -1,3 +1,11 @@
+## [6.2.3-preview.2](https://github.com/Elders/Cronus.Cluster.Consul/compare/v6.2.3-preview.1...v6.2.3-preview.2) (2021-05-11)
+
+
+### Bug Fixes
+
+* Fixes what value is returned when a cluster data sync fails ([26e898e](https://github.com/Elders/Cronus.Cluster.Consul/commit/26e898ecbccc3fcf3e36fc746a7fb19cc9d290af))
+* Updates Cronus ([de3dc83](https://github.com/Elders/Cronus.Cluster.Consul/commit/de3dc839133c5a457a9738d6ab7ee81f04d326cf))
+
 ## [6.2.3-preview.1](https://github.com/Elders/Cronus.Cluster.Consul/compare/v6.2.2...v6.2.3-preview.1) (2021-05-07)
 
 
