@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
-using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -173,7 +172,7 @@ namespace Elders.Cronus.Cluster.Consul
                 }
             }
 
-            return new TData();
+            return default;
         }
 
         private Task TrackProgressAsync(object data, CancellationToken cancellationToken = default)
