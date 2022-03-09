@@ -1,5 +1,6 @@
 ﻿using Elders.Cronus.Cluster.Consul.Internal;
 using Elders.Cronus.Cluster.Job;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -19,15 +20,16 @@ namespace Elders.Cronus.Cluster.Consul
         };
 
         private readonly HttpClient _client;
-
+        private readonly ILogger<CronusJobRunner> logger;
         CancellationTokenSource tokenSource;
 
         string _jobName = string.Empty;
         string _sessionId = string.Empty;
 
-        public CronusJobRunner(HttpClient httpClient)
+        public CronusJobRunner(HttpClient httpClient, ILogger<CronusJobRunner> logger)
         {
             _client = httpClient;
+            this.logger = logger;
         }
 
         public async Task<JobExecutionStatus> ExecuteAsync(ICronusJob<object> job, CancellationToken cancellationToken = default)
@@ -65,7 +67,10 @@ namespace Elders.Cronus.Cluster.Consul
                 if (jobState == CronusJobState.Running)
                     return JobExecutionStatus.Running;
             }
-            catch (Exception) { return JobExecutionStatus.Failed; }
+            catch (Exception ex) when (logger.ErrorException(ex, () => $"Failed to execute job {_jobName}"))
+            {
+                return JobExecutionStatus.Failed;
+            }
 
             return JobExecutionStatus.Completed;
         }
