@@ -1,3 +1,10 @@
+# [7.0.0-preview.3](https://github.com/Elders/Cronus.Cluster.Consul/compare/v7.0.0-preview.2...v7.0.0-preview.3) (2022-03-09)
+
+
+### Bug Fixes
+
+* Adds error log message when job fail ([3d53e98](https://github.com/Elders/Cronus.Cluster.Consul/commit/3d53e9830861ab7cbbf02e63e71d4d960132d356))
+
 # [7.0.0-preview.2](https://github.com/Elders/Cronus.Cluster.Consul/compare/v7.0.0-preview.1...v7.0.0-preview.2) (2021-11-30)
 
 
