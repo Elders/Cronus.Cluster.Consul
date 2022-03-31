@@ -1,3 +1,10 @@
+# [7.0.0-preview.4](https://github.com/Elders/Cronus.Cluster.Consul/compare/v7.0.0-preview.3...v7.0.0-preview.4) (2022-03-31)
+
+
+### Bug Fixes
+
+* Migrate 6.0.3 ([a5546ab](https://github.com/Elders/Cronus.Cluster.Consul/commit/a5546ab6a35425c7dcf2339b6548fdbc82ec99f1))
+
 # [7.0.0-preview.3](https://github.com/Elders/Cronus.Cluster.Consul/compare/v7.0.0-preview.2...v7.0.0-preview.3) (2022-03-09)
 
 
