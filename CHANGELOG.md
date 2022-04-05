@@ -1,3 +1,26 @@
+# [7.0.0-preview.4](https://github.com/Elders/Cronus.Cluster.Consul/compare/v7.0.0-preview.3...v7.0.0-preview.4) (2022-03-31)
+
+
+### Bug Fixes
+
+* Migrate 6.0.3 ([a5546ab](https://github.com/Elders/Cronus.Cluster.Consul/commit/a5546ab6a35425c7dcf2339b6548fdbc82ec99f1))
+
+# [7.0.0-preview.3](https://github.com/Elders/Cronus.Cluster.Consul/compare/v7.0.0-preview.2...v7.0.0-preview.3) (2022-03-09)
+
+
+### Bug Fixes
+
+* Adds error log message when job fail ([3d53e98](https://github.com/Elders/Cronus.Cluster.Consul/commit/3d53e9830861ab7cbbf02e63e71d4d960132d356))
+
+# [7.0.0-preview.2](https://github.com/Elders/Cronus.Cluster.Consul/compare/v7.0.0-preview.1...v7.0.0-preview.2) (2021-11-30)
+
+
+### Bug Fixes
+
+* Update Cronus ([b200e18](https://github.com/Elders/Cronus.Cluster.Consul/commit/b200e18f83d4cb7eab31c2f0eac8430546f8b854))
+
+# [7.0.0-preview.1](https://github.com/Elders/Cronus.Cluster.Consul/compare/v6.3.0...v7.0.0-preview.1) (2021-11-11)
+
 # [6.3.0](https://github.com/Elders/Cronus.Cluster.Consul/compare/v6.2.2...v6.3.0) (2021-11-08)
 
 
