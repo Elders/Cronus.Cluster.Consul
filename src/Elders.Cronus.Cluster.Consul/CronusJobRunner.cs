@@ -128,7 +128,7 @@ namespace Elders.Cronus.Cluster.Consul
         {
             string resource = $"v1/session/renew/{_sessionId}";
 
-            var response = await _client.PutAsync(resource, null, cancellationToken);
+            var response = await _client.PutAsync(resource, null, cancellationToken).ConfigureAwait(false);
 
             return response.IsSuccessStatusCode;
         }
@@ -198,7 +198,7 @@ namespace Elders.Cronus.Cluster.Consul
             HttpResponseMessage response = await _client.PutAsync(resource, content, cancellationToken).ConfigureAwait(false);
             if (response.IsSuccessStatusCode)
             {
-                bool isSuccess = await ParseResponse<bool>(response);
+                bool isSuccess = await ParseResponse<bool>(response).ConfigureAwait(false);
                 if (isSuccess)
                     _sessionId = sessionId;
             }
