@@ -1,3 +1,10 @@
+## [8.0.2](https://github.com/Elders/Cronus.Cluster.Consul/compare/v8.0.1...v8.0.2) (2022-07-19)
+
+
+### Bug Fixes
+
+* Update Cronus ([6147ab6](https://github.com/Elders/Cronus.Cluster.Consul/commit/6147ab663aef46b0d1a48ffac3fbde41dbb2fa65))
+
 ## [8.0.1](https://github.com/Elders/Cronus.Cluster.Consul/compare/v8.0.0...v8.0.1) (2022-07-19)
 
 
