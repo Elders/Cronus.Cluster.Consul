@@ -1,3 +1,10 @@
+## [8.0.1](https://github.com/Elders/Cronus.Cluster.Consul/compare/v8.0.0...v8.0.1) (2022-07-19)
+
+
+### Bug Fixes
+
+* Fix recovering Cronus job after application restart ([11ab05d](https://github.com/Elders/Cronus.Cluster.Consul/commit/11ab05d0cb6f40aea43c90fb877e3bafe3cef7bd))
+
 # [8.0.0](https://github.com/Elders/Cronus.Cluster.Consul/compare/v7.0.0...v8.0.0) (2022-05-25)
 
 # [7.0.0](https://github.com/Elders/Cronus.Cluster.Consul/compare/v6.3.0...v7.0.0) (2022-04-05)
