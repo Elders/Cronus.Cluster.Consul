@@ -1,3 +1,10 @@
+## [8.0.3](https://github.com/Elders/Cronus.Cluster.Consul/compare/v8.0.2...v8.0.3) (2022-08-16)
+
+
+### Bug Fixes
+
+* pipeline update ([48550d3](https://github.com/Elders/Cronus.Cluster.Consul/commit/48550d3aae4c209debd196cb97aa7d9aade555e5))
+
 ## [8.0.2](https://github.com/Elders/Cronus.Cluster.Consul/compare/v8.0.1...v8.0.2) (2022-07-19)
 
 
