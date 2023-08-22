@@ -1,3 +1,5 @@
+# [10.0.0-preview.1](https://github.com/Elders/Cronus.Cluster.Consul/compare/v9.0.0...v10.0.0-preview.1) (2023-08-22)
+
 # [9.0.0](https://github.com/Elders/Cronus.Cluster.Consul/compare/v8.0.3...v9.0.0) (2023-08-22)
 
 
