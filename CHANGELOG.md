@@ -5,6 +5,13 @@
 
 * Updates packages ([feece19](https://github.com/Elders/Cronus.Cluster.Consul/commit/feece19167e03dfdcba711e7072dac41215ca82c))
 
+# [9.0.0](https://github.com/Elders/Cronus.Cluster.Consul/compare/v8.0.3...v9.0.0) (2023-08-22)
+
+
+### Bug Fixes
+
+* Updates packages ([feece19](https://github.com/Elders/Cronus.Cluster.Consul/commit/feece19167e03dfdcba711e7072dac41215ca82c))
+
 # [9.0.0-preview.2](https://github.com/Elders/Cronus.Cluster.Consul/compare/v9.0.0-preview.1...v9.0.0-preview.2) (2023-08-07)
 
 
