@@ -234,7 +234,7 @@ namespace Elders.Cronus.Cluster.Consul
         {
             string jsonBody = JsonConvert.SerializeObject(bodyContent, bodyContent.GetType(), Formatting.None, settings);
 
-            var stringContent = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+            StringContent stringContent = new StringContent(jsonBody, Encoding.UTF8, "application/json");
 
             return stringContent;
         }
