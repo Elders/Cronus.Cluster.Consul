@@ -232,7 +232,7 @@ namespace Elders.Cronus.Cluster.Consul
 
         private StringContent GetJsonRequestBody(object bodyContent)
         {
-            var jsonBody = JsonConvert.SerializeObject(bodyContent, bodyContent.GetType(), Formatting.None, settings);
+            string jsonBody = JsonConvert.SerializeObject(bodyContent, bodyContent.GetType(), Formatting.None, settings);
 
             var stringContent = new StringContent(jsonBody, Encoding.UTF8, "application/json");
 
