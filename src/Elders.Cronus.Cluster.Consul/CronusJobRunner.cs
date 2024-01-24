@@ -92,20 +92,18 @@ namespace Elders.Cronus.Cluster.Consul
             }
         }
 
-        public Task<TData> PingAsync<TData>(TData data, CancellationToken cancellationToken = default) where TData : class, new()
+        public async Task<TData> PingAsync<TData>(TData data, CancellationToken cancellationToken = default) where TData : class, new()
         {
-            return Task.Factory.ContinueWhenAll(new Task[]{
-                RenewSessionAsync(cancellationToken),
-                TrackProgressAsync(data,cancellationToken)
-            }, _ => data);
+            await RenewSessionAsync(cancellationToken).ConfigureAwait(false);
+            await TrackProgressAsync(data, cancellationToken).ConfigureAwait(false);
+
+            return data;
         }
 
-        public Task<TData> PingAsync<TData>(CancellationToken cancellationToken = default) where TData : class, new()
+        public async Task<TData> PingAsync<TData>(CancellationToken cancellationToken = default) where TData : class, new()
         {
-            return Task.Factory
-                .ContinueWhenAll(new Task[] { RenewSessionAsync(cancellationToken) }, _ => Task.CompletedTask)
-                .ContinueWith(x => GetJobDataAsync<TData>(cancellationToken))
-                .Result;
+            await RenewSessionAsync(cancellationToken).ConfigureAwait(false);
+            return await GetJobDataAsync<TData>(cancellationToken).ConfigureAwait(false);
         }
 
         public void Dispose()
