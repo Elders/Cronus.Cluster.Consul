@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace Elders.Cronus.Cluster.Consul
 {
-    public class CronusJobRunner : IClusterOperations, IDisposable, ICronusJobRunner
+    public sealed class CronusJobRunner : AbstractCronusJobRunner, IClusterOperations, IDisposable
     {
         private static JsonSerializerSettings settings = new JsonSerializerSettings()
         {
@@ -21,20 +21,38 @@ namespace Elders.Cronus.Cluster.Consul
 
         private readonly HttpClient _client;
         private readonly ILogger<CronusJobRunner> logger;
-        CancellationTokenSource tokenSource;
 
         string _jobName = string.Empty;
         string _sessionId = string.Empty;
 
-        public CronusJobRunner(HttpClient httpClient, ILogger<CronusJobRunner> logger)
+        public CronusJobRunner(JobManager jobManager, HttpClient httpClient, ILogger<CronusJobRunner> logger) : base(jobManager)
         {
             _client = httpClient;
             this.logger = logger;
         }
 
-        public async Task<JobExecutionStatus> ExecuteAsync(ICronusJob<object> job, CancellationToken cancellationToken = default)
+        public async Task<TData> PingAsync<TData>(TData data, CancellationToken cancellationToken = default) where TData : class, new()
         {
-            tokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
+            await RenewSessionAsync(cancellationToken).ConfigureAwait(false);
+            await TrackProgressAsync(data, cancellationToken).ConfigureAwait(false);
+
+            return data;
+        }
+
+        public async Task<TData> PingAsync<TData>(CancellationToken cancellationToken = default) where TData : class, new()
+        {
+            await RenewSessionAsync(cancellationToken).ConfigureAwait(false);
+            return await GetJobDataAsync<TData>(cancellationToken).ConfigureAwait(false);
+        }
+
+        public override void Dispose()
+        {
+            KingIsDead().GetAwaiter().GetResult();
+        }
+
+        protected override async Task<JobExecutionStatus> ExecuteInternalAsync(ICronusJob<object> job, CancellationToken cancellationToken = default)
+        {
+            CancellationTokenSource tokenSource = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
             CancellationToken ct = tokenSource.Token;
 
             _jobName = job.Name;
@@ -90,25 +108,6 @@ namespace Elders.Cronus.Cluster.Consul
             {
                 ts.Cancel();
             }
-        }
-
-        public async Task<TData> PingAsync<TData>(TData data, CancellationToken cancellationToken = default) where TData : class, new()
-        {
-            await RenewSessionAsync(cancellationToken).ConfigureAwait(false);
-            await TrackProgressAsync(data, cancellationToken).ConfigureAwait(false);
-
-            return data;
-        }
-
-        public async Task<TData> PingAsync<TData>(CancellationToken cancellationToken = default) where TData : class, new()
-        {
-            await RenewSessionAsync(cancellationToken).ConfigureAwait(false);
-            return await GetJobDataAsync<TData>(cancellationToken).ConfigureAwait(false);
-        }
-
-        public void Dispose()
-        {
-            KingIsDead().GetAwaiter().GetResult();
         }
 
         private async Task<string> RequestSessionAsync(CancellationToken cancellationToken = default)
