@@ -28,11 +28,11 @@
     <RootNamespace>Elders.Cronus.Cluster.Consul</RootNamespace>
     <NeutralLanguage>en-US</NeutralLanguage>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
-    <AssemblyVersion>10.0.0</AssemblyVersion>
+    <AssemblyVersion>11.0.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Cronus" Version="10.8.1" />
+    <PackageReference Include="Cronus" Version="11.0.0-preview.2" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
   </ItemGroup>
