@@ -85,7 +85,7 @@ namespace Elders.Cronus.Cluster.Consul
                 if (jobState == CronusJobState.Running)
                     return JobExecutionStatus.Running;
             }
-            catch (Exception ex) when (logger.ErrorException(ex, () => $"Failed to execute job {_jobName}"))
+            catch (Exception ex) when (ExceptionFilterUtility.True(() => logger.LogError(ex, "Failed to execute job {cronus_job_name}", _jobName)))
             {
                 return JobExecutionStatus.Failed;
             }
